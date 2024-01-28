@@ -3,8 +3,8 @@ from app.auth import bp
 from flask_login import login_user, logout_user
 from werkzeug.security import check_password_hash, generate_password_hash
 from app.extensions import db, login_manager
-from app.models import User
-from app.forms import LoginForm, RegisterForm
+from app.models.auth import User
+from app.forms.auth import LoginForm, RegisterForm
 
 
 @login_manager.user_loader
