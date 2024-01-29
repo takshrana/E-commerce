@@ -17,12 +17,12 @@ def register():
     form = RegisterForm()
 
     if form.validate_on_submit():
-        if db.session.execute(db.select(User).filter_by(email=form.email.data)).scalar():
+        if db.session.execute(db.select(User).filter_by(email=form.email.data.lowercase())).scalar():
             flash("Email already registered.")
         else:
             salt_pass = generate_password_hash(password=form.password.data, method='pbkdf2:sha256', salt_length=8)
 
-            new_user = form.email.data
+            new_user = form.email.data.lowercase()
             user = User(email=new_user,password=salt_pass)
 
             db.session.add(user)
@@ -37,7 +37,7 @@ def register():
 def login():
     form = LoginForm()
     if form.validate_on_submit():
-        user = db.session.execute(db.select(User).filter_by(email=form.email.data)).scalar()
+        user = db.session.execute(db.select(User).filter_by(email=form.email.data.lowercase())).scalar()
         if user:
             if check_password_hash(user.password, form.password.data):
                 login_user(user)
