@@ -26,7 +26,7 @@ class Subcategory(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False)
-    category_id = db.Column(db.Integer, ForeignKey("category.id"))
+    category_id = db.Column(db.Integer, ForeignKey("category.id"), nullable=False)
 
     product = relationship("Product", back_populates="subcategory")
     category = relationship("Category", back_populates="subcategory")
@@ -39,7 +39,7 @@ class Category(db.Model):
     name = db.Column(db.String(100), nullable=False)
 
     product = relationship("Product", back_populates="category")
-    subcategory =  relationship("Subcategory", back_populates="category")
+    subcategory = relationship("Subcategory", back_populates="category")
 
 
 class Product(db.Model):
@@ -49,7 +49,7 @@ class Product(db.Model):
     name = db.Column(db.String(100), nullable=False)
     desc = db.Column(db.String())
     stock = db.Column(db.Integer, nullable=False, default=0)
-    price = db.Column(db.Integer)
+    price = db.Column(db.Integer, nullable=False)
     img_url = db.Column(db.String(255))
     category_id = db.Column(db.Integer, ForeignKey("category.id"), nullable=False)
     subcategory_id = db.Column(db.Integer, ForeignKey("subcategory.id"))
@@ -60,3 +60,15 @@ class Product(db.Model):
     subcategory = relationship("Subcategory", back_populates="product")
     stone = relationship("Stone", back_populates="product")
     metal = relationship("Metal", back_populates="product")
+
+
+class Price(db.Model):
+    __tablename__ = "price"
+
+    id = db.Column(db.Integer, primary_key=True)
+    price = db.Column(db.String(100), nullable=False)
+    date = db.Column(db.DateTime, nullable=False)
+    product_id = db.Column(db.Integer, ForeignKey("product.id"), nullable=False)
+
+    product = relationship("Product")
+
