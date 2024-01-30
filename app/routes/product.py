@@ -1,9 +1,9 @@
-from flask import render_template, url_for, redirect
+from flask import render_template, url_for, redirect, request
 from app.product import bp
 from datetime import datetime
 from app.extensions import db
-from app.models.product import Product, Category, Stone, Metal, Price
-from app.forms.product import AddCategoryForm, AddProductForm, ShowProduct, ShowCategory, ShowMetal, AddMetalForm, ShowStone, AddStoneForm
+from app.models.product import Product, Category, Stone, Metal, Price, Subcategory
+from app.forms.product import AddCategoryForm, AddProductForm, ShowProduct, ShowCategory, ShowMetal, AddMetalForm, ShowStone, AddStoneForm, ShowSubcategory, AddSubcategoryForm
 
 
 @bp.route('/', methods=['GET', 'POST'])
@@ -82,6 +82,29 @@ def add_stone():
         return redirect(url_for('product.add_stone'))
 
     return render_template("product/add_template.html", form=form, display=display)
+
+
+@bp.route('/subcategory', methods=['GET', 'POST'])
+@bp.route('/subcategory/<int:id>', methods=['GET', 'POST'])
+def add_subcategory(id=1):
+    # display = ShowSubcategory()
+    # display.options.choices = [g.name for g in choices]
+
+    form = AddSubcategoryForm()
+    category = db.session.execute(db.select(Category)).scalars()
+    # form.category_id.choices = [(g.id, g.name) for g in category]
+    choices = db.session.execute(db.select(Subcategory).filter_by(category_id=id)).scalars()
+    form.options.choices = [g.name for g in choices]
+
+    if request.method == 'POST':
+        name = form.name.data.capitalize()
+        category = id
+        new_entry = Subcategory(name=name, category_id=category)
+        db.session.add(new_entry)
+        db.session.commit()
+        return redirect(url_for('product.add_subcategory'))
+
+    return render_template("product/add_subcategory.html", form=form, categories=category, id=id)
 
 
 def get_all_product():

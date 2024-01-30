@@ -53,7 +53,7 @@ class ShowSubcategory(FlaskForm):
 
 class AddSubcategoryForm(FlaskForm):
 
-    category_id = SelectField("Category", coerce=int, validators=[DataRequired()])
+    options = SelectField("Subcategories", coerce=str)
     name = StringField("Subcategory Name", validators=[DataRequired()])
     submit = SubmitField("Add Product")
 
