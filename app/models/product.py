@@ -3,13 +3,14 @@ from sqlalchemy import ForeignKey
 from sqlalchemy.orm import relationship
 
 
-class Stone(db.Model):
-    __tablename__ = "stone"
+class Style(db.Model):
+    __tablename__ = "style"
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False)
+    active = db.Column(db.Boolean, default=True)
 
-    product = relationship("Product", back_populates="stone")
+    # product = relationship("Product", back_populates="stone")
 
 
 class Metal(db.Model):
@@ -17,19 +18,20 @@ class Metal(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False)
+    active = db.Column(db.Boolean, default=True)
 
-    product = relationship("Product", back_populates="metal")
+    # product = relationship("Product", back_populates="metal")
 
 
-class Subcategory(db.Model):
-    __tablename__ = "subcategory"
-
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(100), nullable=False)
-    category_id = db.Column(db.Integer, ForeignKey("category.id"), nullable=False)
-
-    product = relationship("Product", back_populates="subcategory")
-    category = relationship("Category", back_populates="subcategory")
+# class Subcategory(db.Model):
+#     __tablename__ = "subcategory"
+#
+#     id = db.Column(db.Integer, primary_key=True)
+#     name = db.Column(db.String(100), nullable=False)
+#     category_id = db.Column(db.Integer, ForeignKey("category.id"), nullable=False)
+#
+#     product = relationship("Product", back_populates="subcategory")
+#     category = relationship("Category", back_populates="subcategory")
 
 
 class Category(db.Model):
@@ -37,9 +39,18 @@ class Category(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False)
+    active = db.Column(db.Boolean, default=True)
 
-    product = relationship("Product", back_populates="category")
-    subcategory = relationship("Subcategory", back_populates="category")
+    # product = relationship("Product", back_populates="category")
+    # subcategory = relationship("Subcategory", back_populates="category")
+
+
+class Color(db.Model):
+    __tablename__ = "color"
+
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100), nullable=False)
+    active = db.Column(db.Boolean, default=True)
 
 
 class Product(db.Model):
@@ -47,28 +58,29 @@ class Product(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False)
-    desc = db.Column(db.String())
     stock = db.Column(db.Integer, nullable=False, default=0)
     price = db.Column(db.Integer, nullable=False)
     img_url = db.Column(db.String(255))
     category_id = db.Column(db.Integer, ForeignKey("category.id"), nullable=False)
-    subcategory_id = db.Column(db.Integer, ForeignKey("subcategory.id"))
-    stone_id = db.Column(db.Integer, ForeignKey("stone.id"))
+    style_id = db.Column(db.Integer, ForeignKey("style.id"))
+    color_id = db.Column(db.Integer, ForeignKey("color.id"))
     metal_id = db.Column(db.Integer, ForeignKey("metal.id"))
+    active = db.Column(db.Boolean, default=True)
 
-    category = relationship("Category", back_populates="product")
-    subcategory = relationship("Subcategory", back_populates="product")
-    stone = relationship("Stone", back_populates="product")
-    metal = relationship("Metal", back_populates="product")
+    category = relationship("Category")
+    # subcategory = relationship("Subcategory", back_populates="product")
+    style = relationship("Style")
+    color = relationship("Color")
+    metal = relationship("Metal")
 
 
-class Price(db.Model):
-    __tablename__ = "price"
+# class Price(db.Model):
+#     __tablename__ = "price"
+#
+#     id = db.Column(db.Integer, primary_key=True)
+#     price = db.Column(db.String(100), nullable=False)
+#     date = db.Column(db.DateTime, nullable=False)
+#     product_id = db.Column(db.Integer, ForeignKey("product.id"), nullable=False)
 
-    id = db.Column(db.Integer, primary_key=True)
-    price = db.Column(db.String(100), nullable=False)
-    date = db.Column(db.DateTime, nullable=False)
-    product_id = db.Column(db.Integer, ForeignKey("product.id"), nullable=False)
-
-    product = relationship("Product")
+    # product = relationship("Product")
 

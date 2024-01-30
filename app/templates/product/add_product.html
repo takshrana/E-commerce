@@ -1,0 +1,77 @@
+{% from "bootstrap5/form.html" import render_field %}
+{% extends 'base.html' %}
+{% block content %}
+
+<form method="POST" action="{{ url_for('product.add_product')}}" novalidate>
+    {{ form.csrf_token }}
+
+    <div class="mb-3">
+    <label class="form-label" for="category_id">Category</label>
+    <select class="form-select" name="category_id" id="category_id" onchange="changeCategory(event)">
+        {% for category in categories %}
+      <option value="{{category.id}}" {% if category_id == category.id %} selected {% endif %}>{{category.name}}</option>
+        {% endfor %}
+    </select>
+    </div>
+
+    <div class="mb-3">
+    <label class="form-label" for="metal_id">Metal</label>
+    <select class="form-select" name="metal_id" id="metal_id" onchange="changeMetal(event)">
+        {% for metal in metals %}
+      <option value="{{metal.id}}" {% if metal_id == metal.id %} selected {% endif %}>{{metal.name}}</option>
+        {% endfor %}
+    </select>
+    </div>
+
+    <div class="mb-3">
+    <label class="form-label" for="color_id">Color</label>
+    <select class="form-select" name="color_id" id="color_id" onchange="changeColor(event)">
+        {% for color in colors %}
+      <option value="{{color.id}}" {% if color_id == color.id %} selected {% endif %}>{{color.name}}</option>
+        {% endfor %}
+    </select>
+    </div>
+
+    <div class="mb-3">
+    <label class="form-label" for="style_id">Style</label>
+    <select class="form-select" name="style_id" id="style_id" onchange="changeStyle(event)">
+        {% for style in styles %}
+      <option value="{{style.id}}" {% if style_id == style.id %} selected {% endif %}>{{style.name}}</option>
+        {% endfor %}
+    </select>
+    </div>
+
+    {{ render_field(form.options) }}
+    {{ render_field(form.name) }}
+    {{ render_field(form.desc) }}
+    {{ render_field(form.stock) }}
+    {{ render_field(form.img_url) }}
+    {{ render_field(form.submit) }}
+</form>
+
+<script>
+    function changeCategory(event) {
+
+        var id = event.target.value
+        window.location.href = "/product/"+id+"/"+{{metal_id|tojson}}+"/"+{{color_id|tojson}}+"/"+{{style_id|tojson}}
+
+    }
+    function changeMetal(event) {
+
+        var id = event.target.value
+        window.location.href = "/product/"+{{category_id|tojson}}+"/"+id+"/"+{{color_id|tojson}}+"/"+{{style_id|tojson}}
+
+    }
+    function changeColor(event) {
+
+        var id = event.target.value
+        window.location.href = "/product/"+{{category_id|tojson}}+"/"+{{metal_id|tojson}}+"/"+id+"/"+{{style_id|tojson}}
+
+    }function changeStyle(event) {
+
+        var id = event.target.value
+        window.location.href = "/product/"+{{category_id|tojson}}+"/"+{{metal_id|tojson}}+"/"+{{color_id|tojson}}+"/"+id
+
+    }
+</script>
+{% endblock %}
