@@ -9,12 +9,12 @@ class ShowProduct(FlaskForm):
 
 class AddProductForm(FlaskForm):
 
+    category_id = SelectField("Category", coerce=int, validators=[DataRequired()])
     name = StringField("Product Name", validators=[DataRequired()])
     desc = StringField("Product Description", validators=[])
     stock = IntegerField("Stock", validators=[DataRequired()])
     price = IntegerField("Product Price", validators=[DataRequired()])
     img_url = StringField("Image URL")
-    category_id = SelectField("Category", coerce=int, validators=[DataRequired()])
     submit = SubmitField("Add Product")
 
 

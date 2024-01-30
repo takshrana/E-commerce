@@ -20,7 +20,7 @@ def add_product():
         name = form.name.data.capitalize()
         desc = form.desc.data
         stock = form.stock.data
-        price = form.stock.data
+        price = form.price.data
         date = datetime.now().strftime('%Y-%m-%d')
         img_url = form.img_url.data
         category = form.category_id.data
@@ -45,9 +45,9 @@ def add_category():
         new_entry = Category(name=name)
         db.session.add(new_entry)
         db.session.commit()
-        return redirect(url_for('product.add_product'))
+        return redirect(url_for('product.add_category'))
 
-    return render_template("product/add_template.html", form=form, display=display)@bp.route('/category', methods=['GET', 'POST'])
+    return render_template("product/add_template.html", form=form, display=display)
 
 
 @bp.route('/metal', methods=['GET', 'POST'])
@@ -62,7 +62,7 @@ def add_metal():
         new_entry = Metal(name=name)
         db.session.add(new_entry)
         db.session.commit()
-        return redirect(url_for('product.add_product'))
+        return redirect(url_for('product.add_metal'))
 
     return render_template("product/add_template.html", form=form, display=display)
 
@@ -79,6 +79,11 @@ def add_stone():
         new_entry = Stone(name=name)
         db.session.add(new_entry)
         db.session.commit()
-        return redirect(url_for('product.add_product'))
+        return redirect(url_for('product.add_stone'))
 
     return render_template("product/add_template.html", form=form, display=display)
+
+
+def get_all_product():
+    products = db.session.execute(db.select(Product)).scalars()
+    return products

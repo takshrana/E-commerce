@@ -3,5 +3,25 @@
 {% block title %}Giva Jewellery{% endblock %}
 
 {% block content %}
-Homepage
+<div class="row">
+
+  {% for product in products %}
+  <div class="col-lg-3 col-sm-6 ">
+
+  <div class="card" style="width: 18rem;">
+
+    <img src="{{ product.img_url }}" class="card-img-top" alt="...">
+    <div class="card-body">
+      <p>{{ product.price }}</p>
+
+      <h5 class="card-title">{{ product.name }}</h5>
+
+      <a href="#" class="btn btn-primary">Add to Cart</a>
+    </div>
+
+  </div>
+  </div>
+{% endfor %}
+</div>
+
 {% endblock %}
