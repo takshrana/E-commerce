@@ -15,8 +15,7 @@ class AddProductForm(FlaskForm):
     # style_id = SelectField("Style", coerce=int, validators=[DataRequired()])
     options = SelectField("Products", coerce=str)
     name = StringField("Product Name", validators=[DataRequired()])
-    desc = StringField("Product Description")
-    stock = IntegerField("Stock", validators=[DataRequired()])
+    stock = IntegerField("Stock")
     price = IntegerField("Product Price", validators=[DataRequired()])
     img_url = StringField("Image URL")
     submit = SubmitField("Add Product")
@@ -67,4 +66,3 @@ class AddColorForm(FlaskForm):
 #     options = SelectField("Subcategories", coerce=str)
 #     name = StringField("Subcategory Name", validators=[DataRequired()])
 #     submit = SubmitField("Add Product")
-

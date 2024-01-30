@@ -26,7 +26,6 @@ def add_product(category_id=1, metal_id=1, color_id=1, style_id=1):
 
     if request.method == 'POST':
         name = form.name.data.title()
-        desc = form.desc.data
         stock = form.stock.data
         price = form.price.data
         # date = datetime.now().strftime('%Y-%m-%d')
@@ -37,7 +36,6 @@ def add_product(category_id=1, metal_id=1, color_id=1, style_id=1):
         style = style_id
 
         new_entry = Product(name=name,
-                            desc=desc,
                             stock=stock,
                             price=price,
                             img_url=img_url,
@@ -47,7 +45,8 @@ def add_product(category_id=1, metal_id=1, color_id=1, style_id=1):
                             style_id=style,)
         db.session.add(new_entry)
         db.session.commit()
-        return redirect(url_for('product.add_product'))
+        return redirect(url_for('product.add_product', category_id=category_id,
+                                metal_id=metal_id, color_id=color_id, style_id=style_id))
 
     return render_template("product/add_product.html", form=form,
                            categories=category, metals=metals, styles=styles, colors=colors,
@@ -183,5 +182,5 @@ def add_color():
 
 
 def get_all_product():
-    products = db.session.execute(db.select(Product)).scalars()
+    products = db.session.execute(db.select(Product).filter_by(active=True)).scalars()
     return products

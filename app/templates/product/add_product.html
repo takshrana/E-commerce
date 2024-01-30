@@ -2,7 +2,8 @@
 {% extends 'base.html' %}
 {% block content %}
 
-<form method="POST" action="{{ url_for('product.add_product')}}" novalidate>
+<form method="POST" action="{{ url_for('product.add_product', category_id=category_id,
+                                metal_id=metal_id, color_id=color_id, style_id=style_id)}}">
     {{ form.csrf_token }}
 
     <div class="mb-3">
@@ -43,7 +44,7 @@
 
     {{ render_field(form.options) }}
     {{ render_field(form.name) }}
-    {{ render_field(form.desc) }}
+    {{ render_field(form.price) }}
     {{ render_field(form.stock) }}
     {{ render_field(form.img_url) }}
     {{ render_field(form.submit) }}
