@@ -46,3 +46,14 @@ class AddStoneForm(FlaskForm):
     name = StringField("Stone Name", validators=[DataRequired()])
     submit = SubmitField("Add Stone")
 
+
+class ShowSubcategory(FlaskForm):
+    options = SelectField("Subcategories", coerce=str)
+
+
+class AddSubcategoryForm(FlaskForm):
+
+    category_id = SelectField("Category", coerce=int, validators=[DataRequired()])
+    name = StringField("Subcategory Name", validators=[DataRequired()])
+    submit = SubmitField("Add Product")
+
