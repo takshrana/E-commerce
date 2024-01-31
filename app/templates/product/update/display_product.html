@@ -39,22 +39,19 @@
 </form>
 <ul class="list-group">
   {% for item in items %}
-  <li class="list-group-item">
-    <div class="container-fluid">
-        {% if all_item %}
-      {{item.category.name}} || {{item.metal.name}} || {{item.color.name}} || {{item.style.name}} || {{item.name}}
-        {% else %}
-      {{item.name}}
-        {% endif %}
-        <a class="btn btn-primary btn-md ms-auto" href="{{ url_for('update.edit_product', item_id=item.id) }}">Edit</a>
-        {% if item.active == False %}
-        <a class="btn btn-primary btn-md ms-auto" href="{{ url_for(request.endpoint) }}/availability/{{item.id}}">Activate</a>
-        {% else %}
-        <a class="btn btn-primary btn-md ms-auto" href="{{ url_for(request.endpoint) }}/availability/{{item.id}}">Disable</a>
-        {% endif %}
-    </div>
+      <li class="list-group-item">
+        <div class="container-fluid">
 
-  </li>
+          {{item.category.name}} || {{item.metal.name}} || {{item.color.name}} || {{item.style.name}} || {{item.name}} || ₹{{item.price}}
+            <a class="btn btn-primary btn-md ms-auto" href="{{ url_for('update.edit_product', item_id=item.id) }}">Edit</a>
+            {% if item.active == False %}
+            <a class="btn btn-primary btn-md ms-auto" href="{{ url_for('update.display_all_product') }}/availability/{{item.id}}">Activate</a>
+            {% else %}
+            <a class="btn btn-primary btn-md ms-auto" href="{{ url_for('update.display_all_product') }}/availability/{{item.id}}">Disable</a>
+            {% endif %}
+        </div>
+
+      </li>
   {% endfor %}
 </ul>
 

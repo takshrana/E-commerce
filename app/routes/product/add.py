@@ -1,9 +1,18 @@
+import os
 from flask import render_template, url_for, redirect, request, flash
 from app.product.add import bp
 from datetime import datetime
 from app.extensions import db
 from app.models.product import Product, Category, Style, Metal, Color
 from app.forms.product import AddCategoryForm, AddProductForm, AddMetalForm, AddStyleForm,  AddColorForm
+from werkzeug.utils import secure_filename
+
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
+
+
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 
 @bp.route('/product', methods=['GET', 'POST'])
@@ -25,11 +34,12 @@ def add_product(category_id=1, metal_id=1, color_id=1, style_id=1):
     form.options.choices = [g.name for g in choices]
 
     if request.method == 'POST':
+        file = form.img.data
         name = form.name.data.title()
         stock = form.stock.data
         price = form.price.data
+        img_url = None
         # date = datetime.now().strftime('%Y-%m-%d')
-        img_url = form.img_url.data
         category = category_id
         metal = metal_id
         color = color_id
@@ -42,6 +52,12 @@ def add_product(category_id=1, metal_id=1, color_id=1, style_id=1):
         if exist:
             flash('Already Exist')
         else:
+            if file and allowed_file(file.filename):
+                num = db.session.execute(db.select(Product).order_by(Product.id.desc())).scalar().id + 1
+                file.filename = f"product_{num}.{file.filename.rsplit('.', 1)[1].lower()}"
+                img_url = secure_filename(file.filename)
+                file.save(os.path.join('app/static/img/products', img_url))
+
             new_entry = Product(name=name,
                                 stock=stock,
                                 price=price,
@@ -52,7 +68,7 @@ def add_product(category_id=1, metal_id=1, color_id=1, style_id=1):
                                 style_id=style,)
             db.session.add(new_entry)
             db.session.commit()
-        return redirect(url_for('add.add_product', category_id=category_id,
+        return redirect(url_for('product.add_product', category_id=category_id,
                                 metal_id=metal_id, color_id=color_id, style_id=style_id))
 
     return render_template("product/add/add_product.html", form=form,
@@ -76,7 +92,7 @@ def add_category():
             new_entry = Category(name=name)
             db.session.add(new_entry)
             db.session.commit()
-        return redirect(url_for('add.add_category'))
+        return redirect(url_for('product.add_category'))
 
     return render_template("product/add/add_template.html", form=form)
 
@@ -96,7 +112,7 @@ def add_metal():
             new_entry = Metal(name=name)
             db.session.add(new_entry)
             db.session.commit()
-        return redirect(url_for('add.add_metal'))
+        return redirect(url_for('product.add_metal'))
 
     return render_template("product/add/add_template.html", form=form)
 
@@ -115,7 +131,7 @@ def add_style():
             new_entry = Style(name=name)
             db.session.add(new_entry)
             db.session.commit()
-        return redirect(url_for('add.add_style'))
+        return redirect(url_for('product.add_style'))
 
     return render_template("product/add/add_template.html", form=form)
 
@@ -134,7 +150,7 @@ def add_color():
             new_entry = Color(name=name)
             db.session.add(new_entry)
             db.session.commit()
-        return redirect(url_for('add.add_color'))
+        return redirect(url_for('product.add_color'))
 
     return render_template("product/add/add_template.html", form=form)
 
@@ -181,7 +197,7 @@ def add_color():
 #         stock = form.stock.data
 #         price = form.price.data
 #         # date = datetime.now().strftime('%Y-%m-%d')
-#         img_url = form.img_url.data
+#         img = form.img.data
 #         category = form.category_id.data
 #         metal = form.metal_id.data
 #         color = form.color_id.data
@@ -191,7 +207,7 @@ def add_color():
 #                             desc=desc,
 #                             stock=stock,
 #                             price=price,
-#                             img_url=img_url,
+#                             img=img,
 #                             category_id=category,
 #                             metal_id=metal,
 #                             color_id=color,
@@ -201,3 +217,7 @@ def add_color():
 #
 #         return redirect(url_for('product.add_product'))
 #     return render_template("product/add_template.html", form=form)
+
+def get_all_product():
+    result = db.session.execute(db.select(Product).order_by(Product.active.desc())).scalars()
+    return result

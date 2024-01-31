@@ -10,7 +10,7 @@
 
   <div class="card" style="width: 18rem;">
 
-    <img src="{{ product.img_url }}" class="card-img-top" alt="...">
+    <img src="{{ url_for('static', filename='img/products/') }}{{product.img_url}}" class="card-img-top" alt="">
     <div class="card-body">
       <p>{{ product.price }}</p>
 

@@ -1,18 +1,10 @@
+import os
 from flask import render_template, url_for, redirect, request, flash
 from app.extensions import db
 from app.product.update import bp
 from app.models.product import Category, Metal, Color, Style, Product
 from app.forms.product import AddCategoryForm, AddMetalForm, AddStyleForm, AddColorForm, AddProductForm
-
-
-def get_all_product():
-    result = db.session.execute(db.select(Product).order_by(Product.active.desc())).scalars()
-    return result
-
-
-def get_active_product():
-    result = db.session.execute(db.select(Product).filter_by(active=True)).scalars()
-    return result
+from app.routes.product.add import allowed_file, secure_filename
 
 
 @bp.route('/category', methods=['GET'])
@@ -39,7 +31,7 @@ def display_color():
     return render_template('product/update/display.html', items=items)
 
 
-@bp.route('/product', methods=['GET'])
+@bp.route('/product/', methods=['GET'])
 def display_all_product(category_id=1, metal_id=1, color_id=1, style_id=1):
     items = get_all_product()
 
@@ -55,6 +47,7 @@ def display_all_product(category_id=1, metal_id=1, color_id=1, style_id=1):
                            )
 
 
+# @bp.route('/product/', methods=['GET'])
 @bp.route('/product/<int:category_id>/<int:metal_id>/<int:color_id>/<int:style_id>', methods=['GET'])
 def display_product(category_id=1, metal_id=1, color_id=1, style_id=1):
     items = db.session.execute(db.select(Product).filter_by(category_id=category_id,
@@ -228,17 +221,19 @@ def edit_style(item_id):
 @bp.route('/product/edit/<int:item_id>', methods=['GET', 'POST'])
 def edit_product(item_id):
     item = db.get_or_404(Product, item_id)
-    form = AddProductForm(name=item.name, price=item.price, stock=item.stock, img_url=item.img_url)
+    form = AddProductForm(name=item.name, price=item.price, stock=item.stock)
     categories = db.session.execute(db.select(Category).filter_by(active=True)).scalars()
     metals = db.session.execute(db.select(Metal).filter_by(active=True)).scalars()
     colors = db.session.execute(db.select(Color).filter_by(active=True)).scalars()
     styles = db.session.execute(db.select(Style).filter_by(active=True)).scalars()
 
     if request.method == 'POST':
+        file = form.img.data
+        print(file)
+        img_url = None
         name = form.name.data.title()
         stock = form.stock.data
         price = form.price.data
-        img_url = form.img_url.data
         category = request.form['category_id']
         metal = request.form['metal_id']
         color = request.form['color_id']
@@ -254,10 +249,16 @@ def edit_product(item_id):
             flash('Already Exist')
             return redirect(url_for('update.edit_product', item_id=item_id))
         else:
+            if file and allowed_file(file.filename):
+                num = db.session.execute(db.select(Product).order_by(Product.id.desc())).scalar().id + 1
+                file.filename = f"product_{num}.{file.filename.rsplit('.', 1)[1].lower()}"
+                img_url = secure_filename(file.filename)
+                file.save(os.path.join('app/static/img/products', img_url))
+                item.img_url = img_url
+
             item.name = name
             item.stock = stock
             item.price = price
-            item.img_url = img_url
             item.category_id = category
             item.metal_id = metal
             item.color_id = color
@@ -290,4 +291,14 @@ def get_all_color():
 
 def get_all_style():
     result = db.session.execute(db.select(Style).order_by(Style.active.desc())).scalars()
+    return result
+
+
+def get_all_product():
+    result = db.session.execute(db.select(Product).order_by(Product.active.desc())).scalars()
+    return result
+
+
+def get_active_product():
+    result = db.session.execute(db.select(Product).filter_by(active=True)).scalars()
     return result
