@@ -1,4 +1,4 @@
-from flask import render_template, url_for, redirect, request
+from flask import render_template, url_for, redirect, request, flash
 from app.product.add import bp
 from datetime import datetime
 from app.extensions import db
@@ -13,7 +13,7 @@ def add_product(category_id=1, metal_id=1, color_id=1, style_id=1):
     # display.options.choices = [g.name for g in choices]
 
     form = AddProductForm()
-    category = db.session.execute(db.select(Category).filter_by(active=True)).scalars()
+    categories = db.session.execute(db.select(Category).filter_by(active=True)).scalars()
     metals = db.session.execute(db.select(Metal).filter_by(active=True)).scalars()
     colors = db.session.execute(db.select(Color).filter_by(active=True)).scalars()
     styles = db.session.execute(db.select(Style).filter_by(active=True)).scalars()
@@ -34,22 +34,29 @@ def add_product(category_id=1, metal_id=1, color_id=1, style_id=1):
         metal = metal_id
         color = color_id
         style = style_id
-
-        new_entry = Product(name=name,
-                            stock=stock,
-                            price=price,
-                            img_url=img_url,
-                            category_id=category,
-                            metal_id=metal,
-                            color_id=color,
-                            style_id=style,)
-        db.session.add(new_entry)
-        db.session.commit()
-        return redirect(url_for('product.add_product', category_id=category_id,
+        exist = db.session.execute(db.select(Product).filter_by(name=name,
+                                                                category_id=category,
+                                                                metal_id=metal,
+                                                                color_id=color,
+                                                                style_id=style,)).scalar()
+        if exist:
+            flash('Already Exist')
+        else:
+            new_entry = Product(name=name,
+                                stock=stock,
+                                price=price,
+                                img_url=img_url,
+                                category_id=category,
+                                metal_id=metal,
+                                color_id=color,
+                                style_id=style,)
+            db.session.add(new_entry)
+            db.session.commit()
+        return redirect(url_for('add.add_product', category_id=category_id,
                                 metal_id=metal_id, color_id=color_id, style_id=style_id))
 
     return render_template("product/add/add_product.html", form=form,
-                           categories=category, metals=metals, styles=styles, colors=colors,
+                           categories=categories, metals=metals, styles=styles, colors=colors,
                            category_id=category_id, metal_id=metal_id, style_id=style_id,
                            color_id=color_id)
 
@@ -62,10 +69,14 @@ def add_category():
 
     if request.method == 'POST':
         name = form.name.data.title()
-        new_entry = Category(name=name)
-        db.session.add(new_entry)
-        db.session.commit()
-        return redirect(url_for('product.add_category'))
+        exist = db.session.execute(db.select(Category).filter_by(name=name)).scalar()
+        if exist:
+            flash('Already Exist')
+        else:
+            new_entry = Category(name=name)
+            db.session.add(new_entry)
+            db.session.commit()
+        return redirect(url_for('add.add_category'))
 
     return render_template("product/add/add_template.html", form=form)
 
@@ -78,10 +89,14 @@ def add_metal():
     form.options.choices = [g.name for g in choices]
     if request.method == 'POST':
         name = form.name.data.title()
-        new_entry = Metal(name=name)
-        db.session.add(new_entry)
-        db.session.commit()
-        return redirect(url_for('product.add_metal'))
+        exist = db.session.execute(db.select(Metal).filter_by(name=name)).scalar()
+        if exist:
+            flash('Already Exist')
+        else:
+            new_entry = Metal(name=name)
+            db.session.add(new_entry)
+            db.session.commit()
+        return redirect(url_for('add.add_metal'))
 
     return render_template("product/add/add_template.html", form=form)
 
@@ -93,10 +108,14 @@ def add_style():
     form.options.choices = [g.name for g in choices]
     if request.method == 'POST':
         name = form.name.data.title()
-        new_entry = Style(name=name)
-        db.session.add(new_entry)
-        db.session.commit()
-        return redirect(url_for('product.add_style'))
+        exist = db.session.execute(db.select(Style).filter_by(name=name)).scalar()
+        if exist:
+            flash('Already Exist')
+        else:
+            new_entry = Style(name=name)
+            db.session.add(new_entry)
+            db.session.commit()
+        return redirect(url_for('add.add_style'))
 
     return render_template("product/add/add_template.html", form=form)
 
@@ -108,10 +127,14 @@ def add_color():
     form.options.choices = [g.name for g in choices]
     if request.method == 'POST':
         name = form.name.data.title()
-        new_entry = Color(name=name)
-        db.session.add(new_entry)
-        db.session.commit()
-        return redirect(url_for('product.add_color'))
+        exist = db.session.execute(db.select(Color).filter_by(name=name)).scalar()
+        if exist:
+            flash('Already Exist')
+        else:
+            new_entry = Color(name=name)
+            db.session.add(new_entry)
+            db.session.commit()
+        return redirect(url_for('add.add_color'))
 
     return render_template("product/add/add_template.html", form=form)
 

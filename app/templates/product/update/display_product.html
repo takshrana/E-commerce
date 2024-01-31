@@ -41,9 +41,12 @@
   {% for item in items %}
   <li class="list-group-item">
     <div class="container-fluid">
-
+        {% if all_item %}
+      {{item.category.name}} || {{item.metal.name}} || {{item.color.name}} || {{item.style.name}} || {{item.name}}
+        {% else %}
       {{item.name}}
-        <a class="btn btn-primary btn-md ms-auto" href="#">Edit</a>
+        {% endif %}
+        <a class="btn btn-primary btn-md ms-auto" href="{{ url_for('update.edit_product', item_id=item.id) }}">Edit</a>
         {% if item.active == False %}
         <a class="btn btn-primary btn-md ms-auto" href="{{ url_for(request.endpoint) }}/availability/{{item.id}}">Activate</a>
         {% else %}

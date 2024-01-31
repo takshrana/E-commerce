@@ -1,6 +1,7 @@
 {% from "bootstrap5/form.html" import render_field %}
 {% extends 'base.html' %}
 {% block content %}
+{% include 'flash.html' %}
 <form method="POST" action="{{ url_for(request.endpoint, item_id=item_id) }}">
     {{ form.csrf_token }}
 

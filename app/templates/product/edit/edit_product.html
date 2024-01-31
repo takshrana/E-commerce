@@ -2,8 +2,7 @@
 {% extends 'base.html' %}
 {% block content %}
 {% include 'flash.html' %}
-<form method="POST" action="{{ url_for('product.add_product', category_id=category_id,
-                                metal_id=metal_id, color_id=color_id, style_id=style_id)}}">
+<form method="POST" action="{{ url_for(request.endpoint, item_id=item_id)}}">
     {{ form.csrf_token }}
 
     <div class="mb-3">
@@ -42,39 +41,11 @@
     </select>
     </div>
 
-    {{ render_field(form.options) }}
     {{ render_field(form.name) }}
     {{ render_field(form.price) }}
     {{ render_field(form.stock) }}
     {{ render_field(form.img_url) }}
-    {{ render_field(form.submit) }}
-    <a class="btn btn-primary btn-md ms-auto" href="{{ url_for('update.display_product', category_id=category_id,
-                                metal_id=metal_id, color_id=color_id, style_id=style_id)}}">Update</a>
+    {{ render_field(form.edit) }}
+
 </form>
-
-<script>
-    function changeCategory(event) {
-
-        var id = event.target.value
-        window.location.href = "/add/product/"+id+"/"+{{metal_id|tojson}}+"/"+{{color_id|tojson}}+"/"+{{style_id|tojson}}
-
-    }
-    function changeMetal(event) {
-
-        var id = event.target.value
-        window.location.href = "/add/product/"+{{category_id|tojson}}+"/"+id+"/"+{{color_id|tojson}}+"/"+{{style_id|tojson}}
-
-    }
-    function changeColor(event) {
-
-        var id = event.target.value
-        window.location.href = "/add/product/"+{{category_id|tojson}}+"/"+{{metal_id|tojson}}+"/"+id+"/"+{{style_id|tojson}}
-
-    }function changeStyle(event) {
-
-        var id = event.target.value
-        window.location.href = "/add/product/"+{{category_id|tojson}}+"/"+{{metal_id|tojson}}+"/"+{{color_id|tojson}}+"/"+id
-
-    }
-</script>
 {% endblock %}
