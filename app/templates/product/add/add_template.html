@@ -1,0 +1,12 @@
+{% from "bootstrap5/form.html" import render_field %}
+{% extends 'base.html' %}
+{% block content %}
+<form method="POST" action="{{ url_for(request.endpoint) }}">
+    {{ form.csrf_token }}
+{{ render_field(form.options) }}
+{{ render_field(form.name) }}
+{{ render_field(form.submit) }}
+
+<a class="btn btn-primary btn-md ms-auto" href="{{ url_for(request.endpoint) }}">Update</a>
+</form>
+{% endblock %}

@@ -48,30 +48,32 @@
     {{ render_field(form.stock) }}
     {{ render_field(form.img_url) }}
     {{ render_field(form.submit) }}
+    <a class="btn btn-primary btn-md ms-auto" href="{{ url_for('update.display_product', category_id=category_id,
+                                metal_id=metal_id, color_id=color_id, style_id=style_id)}}">Update</a>
 </form>
 
 <script>
     function changeCategory(event) {
 
         var id = event.target.value
-        window.location.href = "/product/"+id+"/"+{{metal_id|tojson}}+"/"+{{color_id|tojson}}+"/"+{{style_id|tojson}}
+        window.location.href = "/add/product/"+id+"/"+{{metal_id|tojson}}+"/"+{{color_id|tojson}}+"/"+{{style_id|tojson}}
 
     }
     function changeMetal(event) {
 
         var id = event.target.value
-        window.location.href = "/product/"+{{category_id|tojson}}+"/"+id+"/"+{{color_id|tojson}}+"/"+{{style_id|tojson}}
+        window.location.href = "/add/product/"+{{category_id|tojson}}+"/"+id+"/"+{{color_id|tojson}}+"/"+{{style_id|tojson}}
 
     }
     function changeColor(event) {
 
         var id = event.target.value
-        window.location.href = "/product/"+{{category_id|tojson}}+"/"+{{metal_id|tojson}}+"/"+id+"/"+{{style_id|tojson}}
+        window.location.href = "/add/product/"+{{category_id|tojson}}+"/"+{{metal_id|tojson}}+"/"+id+"/"+{{style_id|tojson}}
 
     }function changeStyle(event) {
 
         var id = event.target.value
-        window.location.href = "/product/"+{{category_id|tojson}}+"/"+{{metal_id|tojson}}+"/"+{{color_id|tojson}}+"/"+id
+        window.location.href = "/add/product/"+{{category_id|tojson}}+"/"+{{metal_id|tojson}}+"/"+{{color_id|tojson}}+"/"+id
 
     }
 </script>

@@ -1,6 +1,6 @@
 from flask import render_template, url_for, redirect
 from app.extensions import db
-from app.update import bp
+from app.product.update import bp
 from app.models.product import Category, Metal, Color, Style, Product
 
 
@@ -37,25 +37,25 @@ def get_active_product():
 @bp.route('/category', methods=['GET'])
 def display_category():
     items = get_all_category()
-    return render_template('update/display.html', items=items)
+    return render_template('product/update/display.html', items=items)
 
 
 @bp.route('/metal', methods=['GET'])
 def display_metal():
     items = get_all_metal()
-    return render_template('update/display.html', items=items)
+    return render_template('product/update/display.html', items=items)
 
 
 @bp.route('/style', methods=['GET'])
 def display_style():
     items = get_all_style()
-    return render_template('update/display.html', items=items)
+    return render_template('product/update/display.html', items=items)
 
 
 @bp.route('/color', methods=['GET'])
 def display_color():
     items = get_all_color()
-    return render_template('update/display.html', items=items)
+    return render_template('product/update/display.html', items=items)
 
 
 @bp.route('/product', methods=['GET'])
@@ -70,7 +70,7 @@ def display_product(category_id=1, metal_id=1, color_id=1, style_id=1):
     colors = db.session.execute(db.select(Color)).scalars()
     styles = db.session.execute(db.select(Style)).scalars()
 
-    return render_template('update/display_product.html', items=items,
+    return render_template('product/update/display_product.html', items=items,
                            categories=category, metals=metals, styles=styles, colors=colors,
                            category_id=category_id, metal_id=metal_id, style_id=style_id,
                            color_id=color_id
@@ -79,17 +79,62 @@ def display_product(category_id=1, metal_id=1, color_id=1, style_id=1):
 
 @bp.route('/category/availability/<int:item_id>', methods=['GET'])
 def update_category(item_id):
-    category = db.get_or_404(Category, item_id)
-    if category.active:
-        category.active = False
+    item = db.get_or_404(Category, item_id)
+    if item.active:
+        item.active = False
         products = db.session.execute(db.select(Product).filter_by(active=True, category_id=item_id)).scalars()
         for product in products:
             product.active = False
     else:
-        category.active = True
+        item.active = True
 
     db.session.commit()
     return redirect(url_for('update.display_category'))
+
+
+@bp.route('/metal/availability/<int:item_id>', methods=['GET'])
+def update_metal(item_id):
+    item = db.get_or_404(Metal, item_id)
+    if item.active:
+        item.active = False
+        products = db.session.execute(db.select(Product).filter_by(active=True, metal_id=item_id)).scalars()
+        for product in products:
+            product.active = False
+    else:
+        item.active = True
+
+    db.session.commit()
+    return redirect(url_for('update.display_metal'))
+
+
+@bp.route('/style/availability/<int:item_id>', methods=['GET'])
+def update_style(item_id):
+    item = db.get_or_404(Style, item_id)
+    if item.active:
+        item.active = False
+        products = db.session.execute(db.select(Product).filter_by(active=True, style_id=item_id)).scalars()
+        for product in products:
+            product.active = False
+    else:
+        item.active = True
+
+    db.session.commit()
+    return redirect(url_for('update.display_style'))
+
+
+@bp.route('/color/availability/<int:item_id>', methods=['GET'])
+def update_color(item_id):
+    item = db.get_or_404(Color, item_id)
+    if item.active:
+        item.active = False
+        products = db.session.execute(db.select(Product).filter_by(active=True, color_id=item_id)).scalars()
+        for product in products:
+            product.active = False
+    else:
+        item.active = True
+
+    db.session.commit()
+    return redirect(url_for('update.display_metal'))
 
 
 @bp.route('/product/availability/<int:item_id>', methods=['GET'])

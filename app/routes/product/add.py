@@ -1,13 +1,13 @@
 from flask import render_template, url_for, redirect, request
-from app.product import bp
+from app.product.add import bp
 from datetime import datetime
 from app.extensions import db
 from app.models.product import Product, Category, Style, Metal, Color
 from app.forms.product import AddCategoryForm, AddProductForm, AddMetalForm, AddStyleForm,  AddColorForm
 
 
-@bp.route('/', methods=['GET', 'POST'])
-@bp.route('/<int:category_id>/<int:metal_id>/<int:color_id>/<int:style_id>', methods=['GET', 'POST'])
+@bp.route('/product', methods=['GET', 'POST'])
+@bp.route('product/<int:category_id>/<int:metal_id>/<int:color_id>/<int:style_id>', methods=['GET', 'POST'])
 def add_product(category_id=1, metal_id=1, color_id=1, style_id=1):
     # display = ShowSubcategory()
     # display.options.choices = [g.name for g in choices]
@@ -48,7 +48,7 @@ def add_product(category_id=1, metal_id=1, color_id=1, style_id=1):
         return redirect(url_for('product.add_product', category_id=category_id,
                                 metal_id=metal_id, color_id=color_id, style_id=style_id))
 
-    return render_template("product/add_product.html", form=form,
+    return render_template("product/add/add_product.html", form=form,
                            categories=category, metals=metals, styles=styles, colors=colors,
                            category_id=category_id, metal_id=metal_id, style_id=style_id,
                            color_id=color_id)
@@ -67,7 +67,7 @@ def add_category():
         db.session.commit()
         return redirect(url_for('product.add_category'))
 
-    return render_template("product/add_template.html", form=form)
+    return render_template("product/add/add_template.html", form=form)
 
 
 @bp.route('/metal', methods=['GET', 'POST'])
@@ -83,7 +83,7 @@ def add_metal():
         db.session.commit()
         return redirect(url_for('product.add_metal'))
 
-    return render_template("product/add_template.html", form=form)
+    return render_template("product/add/add_template.html", form=form)
 
 
 @bp.route('/style', methods=['GET', 'POST'])
@@ -98,7 +98,7 @@ def add_style():
         db.session.commit()
         return redirect(url_for('product.add_style'))
 
-    return render_template("product/add_template.html", form=form)
+    return render_template("product/add/add_template.html", form=form)
 
 
 @bp.route('/color', methods=['GET', 'POST'])
@@ -113,7 +113,7 @@ def add_color():
         db.session.commit()
         return redirect(url_for('product.add_color'))
 
-    return render_template("product/add_template.html", form=form)
+    return render_template("product/add/add_template.html", form=form)
 
 
 # @bp.route('/subcategory', methods=['GET', 'POST'])
