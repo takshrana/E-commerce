@@ -19,6 +19,7 @@ class AddProductForm(FlaskForm):
     price = IntegerField("Product Price", validators=[DataRequired()])
     img_url = StringField("Image URL")
     submit = SubmitField("Add Product")
+    edit = SubmitField("Edit Product")
 
 
 # class ShowCategory(FlaskForm):
@@ -29,6 +30,7 @@ class AddCategoryForm(FlaskForm):
     options = SelectField("Categories", coerce=str)
     name = StringField("Category Name", validators=[DataRequired()])
     submit = SubmitField("Add Category")
+    edit = SubmitField("Edit Category")
 
 
 # class ShowMetal(FlaskForm):
@@ -39,6 +41,7 @@ class AddMetalForm(FlaskForm):
     options = SelectField("Metals", coerce=str)
     name = StringField("Metal Name", validators=[DataRequired()])
     submit = SubmitField("Add Metal")
+    edit = SubmitField("Edit Metal")
 
 
 # class ShowStone(FlaskForm):
@@ -49,12 +52,14 @@ class AddStyleForm(FlaskForm):
     options = SelectField("Styles", coerce=str)
     name = StringField("Style Name", validators=[DataRequired()])
     submit = SubmitField("Add Style")
+    edit = SubmitField("Edit Style")
 
 
 class AddColorForm(FlaskForm):
     options = SelectField("Colors", coerce=str)
     name = StringField("Color Name", validators=[DataRequired()])
     submit = SubmitField("Add Color")
+    edit = SubmitField("Edit Color")
 
 
 # class ShowSubcategory(FlaskForm):

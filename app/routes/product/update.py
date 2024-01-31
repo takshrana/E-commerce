@@ -1,27 +1,8 @@
-from flask import render_template, url_for, redirect
+from flask import render_template, url_for, redirect, request
 from app.extensions import db
 from app.product.update import bp
 from app.models.product import Category, Metal, Color, Style, Product
-
-
-def get_all_category():
-    result = db.session.execute(db.select(Category).order_by(Category.active.desc())).scalars()
-    return result
-
-
-def get_all_metal():
-    result = db.session.execute(db.select(Metal).order_by(Metal.active.desc())).scalars()
-    return result
-
-
-def get_all_color():
-    result = db.session.execute(db.select(Color).order_by(Color.active.desc())).scalars()
-    return result
-
-
-def get_all_style():
-    result = db.session.execute(db.select(Style).order_by(Style.active.desc())).scalars()
-    return result
+from app.forms.product import AddCategoryForm, AddMetalForm, AddStyleForm, AddColorForm, AddProductForm
 
 
 def get_all_product():
@@ -153,3 +134,78 @@ def update_product(item_id):
     return redirect(url_for('update.display_product', category_id=product.category_id, metal_id=product.metal_id,
                             style_id=product.style_id, color_id=product.color_id))
 
+
+@bp.route('/category/edit/<int:item_id>', methods=['GET', 'POST'])
+def edit_category(item_id):
+    item = db.get_or_404(Category, item_id)
+    form = AddCategoryForm(name=item.name)
+
+    if request.method == 'POST':
+        name = form.name.data.title()
+        item.name = name
+        db.session.commit()
+        return redirect(url_for('update.display_category'))
+
+    return render_template('product/edit/edit_template.html', form=form, item_id=item_id)
+
+
+@bp.route('/metal/edit/<int:item_id>', methods=['GET', 'POST'])
+def edit_metal(item_id):
+    item = db.get_or_404(Metal, item_id)
+    form = AddMetalForm(name=item.name)
+
+    if request.method == 'POST':
+        name = form.name.data.title()
+        item.name = name
+        db.session.commit()
+        return redirect(url_for('update.display_metal'))
+
+    return render_template('product/edit/edit_template.html', form=form, item_id=item_id)
+
+
+@bp.route('/color/edit/<int:item_id>', methods=['GET', 'POST'])
+def edit_color(item_id):
+    item = db.get_or_404(Color, item_id)
+    form = AddColorForm(name=item.name)
+
+    if request.method == 'POST':
+        name = form.name.data.title()
+        item.name = name
+        db.session.commit()
+        return redirect(url_for('update.display_color'))
+
+    return render_template('product/edit/edit_template.html', form=form, item_id=item_id)
+
+
+@bp.route('/style/edit/<int:item_id>', methods=['GET', 'POST'])
+def edit_style(item_id):
+    item = db.get_or_404(Style, item_id)
+    form = AddStyleForm(name=item.name)
+
+    if request.method == 'POST':
+        name = form.name.data.title()
+        item.name = name
+        db.session.commit()
+        return redirect(url_for('update.display_style'))
+
+    return render_template('product/edit/edit_template.html', form=form, item_id=item_id)
+
+
+def get_all_category():
+    result = db.session.execute(db.select(Category).order_by(Category.active.desc())).scalars()
+    return result
+
+
+def get_all_metal():
+    result = db.session.execute(db.select(Metal).order_by(Metal.active.desc())).scalars()
+    return result
+
+
+def get_all_color():
+    result = db.session.execute(db.select(Color).order_by(Color.active.desc())).scalars()
+    return result
+
+
+def get_all_style():
+    result = db.session.execute(db.select(Style).order_by(Style.active.desc())).scalars()
+    return result

@@ -7,7 +7,7 @@
     <div class="container-fluid">
 
       {{item.name}}
-        <a class="btn btn-primary btn-md ms-auto" href="#">Edit</a>
+        <a class="btn btn-primary btn-md ms-auto" href="{{ url_for(request.endpoint) }}/edit/{{item.id}}">Edit</a>
         {% if item.active == False %}
         <a class="btn btn-primary btn-md ms-auto" href="{{ url_for(request.endpoint) }}/availability/{{item.id}}">Activate</a>
         {% else %}
