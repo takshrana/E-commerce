@@ -21,6 +21,9 @@ def create_app(config_class=Config):
     from app.product import bp as prod_bp
     app.register_blueprint(prod_bp)
 
+    from app.update import bp as upd_bp
+    app.register_blueprint(upd_bp)
+
     @app.route('/test')
     def test_page():
         return '<h1>Test</h1>'

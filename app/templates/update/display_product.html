@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+{% block content %}
+<form>
+    <div class="mb-3">
+    <label class="form-label" for="category_id">Category</label>
+    <select class="form-select" name="category_id" id="category_id" onchange="changeCategory(event)">
+        {% for category in categories %}
+      <option value="{{category.id}}" {% if category_id == category.id %} selected {% endif %}>{{category.name}}</option>
+        {% endfor %}
+    </select>
+    </div>
+
+    <div class="mb-3">
+    <label class="form-label" for="metal_id">Metal</label>
+    <select class="form-select" name="metal_id" id="metal_id" onchange="changeMetal(event)">
+        {% for metal in metals %}
+      <option value="{{metal.id}}" {% if metal_id == metal.id %} selected {% endif %}>{{metal.name}}</option>
+        {% endfor %}
+    </select>
+    </div>
+
+    <div class="mb-3">
+    <label class="form-label" for="color_id">Color</label>
+    <select class="form-select" name="color_id" id="color_id" onchange="changeColor(event)">
+        {% for color in colors %}
+      <option value="{{color.id}}" {% if color_id == color.id %} selected {% endif %}>{{color.name}}</option>
+        {% endfor %}
+    </select>
+    </div>
+
+    <div class="mb-3">
+    <label class="form-label" for="style_id">Style</label>
+    <select class="form-select" name="style_id" id="style_id" onchange="changeStyle(event)">
+        {% for style in styles %}
+      <option value="{{style.id}}" {% if style_id == style.id %} selected {% endif %}>{{style.name}}</option>
+        {% endfor %}
+    </select>
+    </div>
+</form>
+<ul class="list-group">
+  {% for item in items %}
+  <li class="list-group-item">
+    <div class="container-fluid">
+
+      {{item.name}}
+        <a class="btn btn-primary btn-md ms-auto" href="#">Edit</a>
+        {% if item.active == False %}
+        <a class="btn btn-primary btn-md ms-auto" href="{{ url_for(request.endpoint) }}/availability/{{item.id}}">Activate</a>
+        {% else %}
+        <a class="btn btn-primary btn-md ms-auto" href="{{ url_for(request.endpoint) }}/availability/{{item.id}}">Disable</a>
+        {% endif %}
+    </div>
+
+  </li>
+  {% endfor %}
+</ul>
+
+<script>
+    function changeCategory(event) {
+
+        var id = event.target.value
+        window.location.href = "/update/product/"+id+"/"+{{metal_id|tojson}}+"/"+{{color_id|tojson}}+"/"+{{style_id|tojson}}
+
+    }
+    function changeMetal(event) {
+
+        var id = event.target.value
+        window.location.href = "/update/product/"+{{category_id|tojson}}+"/"+id+"/"+{{color_id|tojson}}+"/"+{{style_id|tojson}}
+
+    }
+    function changeColor(event) {
+
+        var id = event.target.value
+        window.location.href = "/update/product/"+{{category_id|tojson}}+"/"+{{metal_id|tojson}}+"/"+id+"/"+{{style_id|tojson}}
+
+    }function changeStyle(event) {
+
+        var id = event.target.value
+        window.location.href = "/update/product/"+{{category_id|tojson}}+"/"+{{metal_id|tojson}}+"/"+{{color_id|tojson}}+"/"+id
+
+    }
+</script>
+{% endblock %}}}

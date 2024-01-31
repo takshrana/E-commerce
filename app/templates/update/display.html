@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<ul class="list-group">
+  {% for item in items %}
+  <li class="list-group-item">
+    <div class="container-fluid">
+
+      {{item.name}}
+        <a class="btn btn-primary btn-md ms-auto" href="#">Edit</a>
+        {% if item.active == False %}
+        <a class="btn btn-primary btn-md ms-auto" href="{{ url_for(request.endpoint) }}/availability/{{item.id}}">Activate</a>
+        {% else %}
+        <a class="btn btn-primary btn-md ms-auto" href="{{ url_for(request.endpoint) }}/availability/{{item.id}}">Disable</a>
+        {% endif %}
+    </div>
+
+  </li>
+  {% endfor %}
+</ul>
+
+
+{% endblock %}}}

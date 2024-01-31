@@ -54,48 +54,6 @@ def add_product(category_id=1, metal_id=1, color_id=1, style_id=1):
                            color_id=color_id)
 
 
-# @bp.route('/', methods=['GET', 'POST'])
-# def add_product():
-#
-#     form = AddProductForm()
-#     category = db.session.execute(db.select(Category).filter_by(active=True)).scalars()
-#     metals = db.session.execute(db.select(Metal).filter_by(active=True)).scalars()
-#     colors = db.session.execute(db.select(Color).filter_by(active=True)).scalars()
-#     styles = db.session.execute(db.select(Style).filter_by(active=True)).scalars()
-#
-#     form.category_id.choices = [(g.id, g.name) for g in category]
-#     form.metal_id.choices = [(g.id, g.name) for g in metals]
-#     form.color_id.choices = [(g.id, g.name) for g in colors]
-#     form.style_id.choices = [(g.id, g.name) for g in styles]
-#
-#     if form.validate_on_submit():
-#         name = form.name.data.title()
-#         desc = form.desc.data
-#         stock = form.stock.data
-#         price = form.price.data
-#         # date = datetime.now().strftime('%Y-%m-%d')
-#         img_url = form.img_url.data
-#         category = form.category_id.data
-#         metal = form.metal_id.data
-#         color = form.color_id.data
-#         style = form.style_id.data
-#
-#         new_entry = Product(name=name,
-#                             desc=desc,
-#                             stock=stock,
-#                             price=price,
-#                             img_url=img_url,
-#                             category_id=category,
-#                             metal_id=metal,
-#                             color_id=color,
-#                             style_id=style,)
-#         db.session.add(new_entry)
-#         db.session.commit()
-#
-#         return redirect(url_for('product.add_product'))
-#     return render_template("product/add_template.html", form=form)
-
-
 @bp.route('/category', methods=['GET', 'POST'])
 def add_category():
     category = db.session.execute(db.select(Category).filter_by(active=True)).scalars()
@@ -180,7 +138,43 @@ def add_color():
 #
 #     return render_template("product/add_subcategory.html", form=form, categories=category, id=id)
 
-
-def get_all_product():
-    products = db.session.execute(db.select(Product).filter_by(active=True)).scalars()
-    return products
+# @bp.route('/', methods=['GET', 'POST'])
+# def add_product():
+#
+#     form = AddProductForm()
+#     category = db.session.execute(db.select(Category).filter_by(active=True)).scalars()
+#     metals = db.session.execute(db.select(Metal).filter_by(active=True)).scalars()
+#     colors = db.session.execute(db.select(Color).filter_by(active=True)).scalars()
+#     styles = db.session.execute(db.select(Style).filter_by(active=True)).scalars()
+#
+#     form.category_id.choices = [(g.id, g.name) for g in category]
+#     form.metal_id.choices = [(g.id, g.name) for g in metals]
+#     form.color_id.choices = [(g.id, g.name) for g in colors]
+#     form.style_id.choices = [(g.id, g.name) for g in styles]
+#
+#     if form.validate_on_submit():
+#         name = form.name.data.title()
+#         desc = form.desc.data
+#         stock = form.stock.data
+#         price = form.price.data
+#         # date = datetime.now().strftime('%Y-%m-%d')
+#         img_url = form.img_url.data
+#         category = form.category_id.data
+#         metal = form.metal_id.data
+#         color = form.color_id.data
+#         style = form.style_id.data
+#
+#         new_entry = Product(name=name,
+#                             desc=desc,
+#                             stock=stock,
+#                             price=price,
+#                             img_url=img_url,
+#                             category_id=category,
+#                             metal_id=metal,
+#                             color_id=color,
+#                             style_id=style,)
+#         db.session.add(new_entry)
+#         db.session.commit()
+#
+#         return redirect(url_for('product.add_product'))
+#     return render_template("product/add_template.html", form=form)
