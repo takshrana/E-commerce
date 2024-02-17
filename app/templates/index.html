@@ -3,21 +3,24 @@
 {% block title %}Giva Jewellery{% endblock %}
 
 {% block content %}
-<div class="row">
+<div class="container-fluid banner-container">
+  <img class="banner-img" src="{{ url_for('static', filename='img/index-banner.png')}}" alt="">
+</div>
+<div class="row product-grid">
 
   {% for product in products %}
-  <div class="col-lg-3 col-sm-6 d-flex justify-content-center">
+  <div class="card-container col-lg-3 col-sm-6 d-flex justify-content-center">
 
-  <div class="card" style="width: 18rem;">
+  <div class="product-card card" style="width: 18rem;">
 
-    <img src="{{ url_for('static', filename='img/products/') }}{{product.img_url}}" class="card-img-top" alt="">
-    <div class="card-body">
-      <p>{{ product.price }}</p>
+    <img src="{{ url_for('static', filename='img/products/') }}{% if product.img_url %}{{product.img_url}}{% else %}default.png{% endif %}" class="card-img-top" alt="">
+    <div class="product-body card-body">
+      <p class="product-price">{{ product.price }}</p>
 
-      <h5 class="card-title">{{ product.name }}</h5>
+      <h5 class="product-title card-title">{{ product.name }}</h5>
 
-      <a href="#" class="btn btn-primary">Add to Cart</a>
     </div>
+    <a href="#" class="btn card-btn">Add to Cart</a>
 
   </div>
   </div>

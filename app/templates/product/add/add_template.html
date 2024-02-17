@@ -1,13 +1,20 @@
 {% from "bootstrap5/form.html" import render_field %}
 {% extends 'base.html' %}
 {% block content %}
+<div class="form-page-bg">
+
+    <div class="container-fluid form-div">
+        <h3 class="form-title">Add {{ url_for(request.endpoint).split('/')[2].title() }}</h3>
 {% include 'flash.html' %}
 <form method="POST" action="{{ url_for(request.endpoint) }}">
     {{ form.csrf_token }}
 {{ render_field(form.options) }}
 {{ render_field(form.name) }}
-{{ render_field(form.submit) }}
+{{ render_field(form.submit, class='btn-danger form-btn') }}
 
-<a class="btn btn-primary btn-md ms-auto" href="/update/{{ url_for(request.endpoint).split('/')[-1] }}">Update</a>
+<a class="btn btn-danger btn-md ms-auto form-btn" href="/update/{{ url_for(request.endpoint).split('/')[-1] }}">Update</a>
 </form>
+    </div>
+</div>
 {% endblock %}
+

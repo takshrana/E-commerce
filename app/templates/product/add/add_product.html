@@ -2,63 +2,70 @@
 {% extends 'base.html' %}
 {% block content %}
 {% include 'flash.html' %}
-<form method="POST" action="{{ url_for('product.add_product', category_id=category_id,
-                                metal_id=metal_id, color_id=color_id, style_id=style_id)}}" enctype="multipart/form-data">
-    {{ form.csrf_token }}
+<div class="form-page-bg">
 
-    <div class="mb-3">
-    <label class="form-label" for="category_id">Category</label>
-    <select class="form-select" name="category_id" id="category_id" onchange="changeCategory(event)">
-        <option disabled selected value> -- select an option -- </option>
-        {% for category in categories %}
-      <option value="{{category.id}}" {% if category_id == category.id %} selected {% endif %}>{{category.name}}</option>
-        {% endfor %}
-    </select>
+    <div class="container-fluid form-div">
+        <h3 class="form-title">Add Product</h3>
+        <form method="POST" action="{{ url_for('product.add_product', category_id=category_id,
+        metal_id=metal_id, color_id=color_id, style_id=style_id)}}" enctype="multipart/form-data">
+        {{ form.csrf_token }}
+        
+        <div class="mb-3">
+            <label class="form-label" for="category_id">Category</label>
+            <select class="form-select" name="category_id" id="category_id" onchange="changeCategory(event)">
+                <option disabled selected value> -- select an option -- </option>
+                {% for category in categories %}
+                <option value="{{category.id}}" {% if category_id == category.id %} selected {% endif %}>{{category.name}}</option>
+                {% endfor %}
+            </select>
+        </div>
+        
+        <div class="mb-3">
+            <label class="form-label" for="metal_id">Metal</label>
+            <select class="form-select" name="metal_id" id="metal_id" onchange="changeMetal(event)">
+                {% for metal in metals %}
+                <option value="{{metal.id}}" {% if metal_id == metal.id %} selected {% endif %}>{{metal.name}}</option>
+                {% endfor %}
+            </select>
+        </div>
+        
+        <div class="mb-3">
+            <label class="form-label" for="color_id">Color</label>
+            <select class="form-select" name="color_id" id="color_id" onchange="changeColor(event)">
+                {% for color in colors %}
+                <option value="{{color.id}}" {% if color_id == color.id %} selected {% endif %}>{{color.name}}</option>
+                {% endfor %}
+            </select>
+        </div>
+        
+        <div class="mb-3">
+            <label class="form-label" for="style_id">Style</label>
+            <select class="form-select" name="style_id" id="style_id" onchange="changeStyle(event)">
+                {% for style in styles %}
+                <option value="{{style.id}}" {% if style_id == style.id %} selected {% endif %}>{{style.name}}</option>
+                {% endfor %}
+            </select>
+        </div>
+        
+        {{ render_field(form.options) }}
+        {{ render_field(form.name) }}
+        {{ render_field(form.price) }}
+        {{ render_field(form.stock) }}
+        {{ render_field(form.img) }}
+        {{ render_field(form.submit, class='btn-danger form-btn') }}
+        <!--<a class="btn btn-primary btn-md ms-auto" href="{{ url_for('update.display_product', category_id=category_id, metal_id=metal_id, color_id=color_id, style_id=style_id)}}">Update</a>-->
+        <a class="btn btn-danger btn-md ms-auto form-btn" href="{{ url_for('update.display_all_product') }}">Update</button>
+    </form>
     </div>
+</div>
 
-    <div class="mb-3">
-    <label class="form-label" for="metal_id">Metal</label>
-    <select class="form-select" name="metal_id" id="metal_id" onchange="changeMetal(event)">
-        {% for metal in metals %}
-      <option value="{{metal.id}}" {% if metal_id == metal.id %} selected {% endif %}>{{metal.name}}</option>
-        {% endfor %}
-    </select>
-    </div>
-
-    <div class="mb-3">
-    <label class="form-label" for="color_id">Color</label>
-    <select class="form-select" name="color_id" id="color_id" onchange="changeColor(event)">
-        {% for color in colors %}
-      <option value="{{color.id}}" {% if color_id == color.id %} selected {% endif %}>{{color.name}}</option>
-        {% endfor %}
-    </select>
-    </div>
-
-    <div class="mb-3">
-    <label class="form-label" for="style_id">Style</label>
-    <select class="form-select" name="style_id" id="style_id" onchange="changeStyle(event)">
-        {% for style in styles %}
-      <option value="{{style.id}}" {% if style_id == style.id %} selected {% endif %}>{{style.name}}</option>
-        {% endfor %}
-    </select>
-    </div>
-
-    {{ render_field(form.options) }}
-    {{ render_field(form.name) }}
-    {{ render_field(form.price) }}
-    {{ render_field(form.stock) }}
-    {{ render_field(form.img) }}
-    {{ render_field(form.submit) }}
-<!--<a class="btn btn-primary btn-md ms-auto" href="{{ url_for('update.display_product', category_id=category_id, metal_id=metal_id, color_id=color_id, style_id=style_id)}}">Update</a>-->
-    <a class="btn btn-primary btn-md ms-auto" href="{{ url_for('update.display_all_product') }}">Update</a>
-</form>
 
 <script>
     function changeCategory(event) {
-
+        
         var id = event.target.value
         window.location.href = "/add/product/"+id+"/"+{{metal_id|tojson}}+"/"+{{color_id|tojson}}+"/"+{{style_id|tojson}}
-
+        
     }
     function changeMetal(event) {
 

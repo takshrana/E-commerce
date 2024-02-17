@@ -1,6 +1,10 @@
 {% from "bootstrap5/form.html" import render_field %}
 {% extends 'base.html' %}
 {% block content %}
+<div class="form-page-bg">
+
+  <div class="container-fluid form-div">
+    <h3 class="form-title">Edit</h3>
 {% include 'flash.html' %}
 <form method="POST" action="{{ url_for(request.endpoint, item_id=item_id)}}" enctype="multipart/form-data">
     {{ form.csrf_token }}
@@ -45,7 +49,7 @@
     {{ render_field(form.price) }}
     {{ render_field(form.stock) }}
     {{ render_field(form.img) }}
-    {{ render_field(form.edit) }}
+    {{ render_field(form.edit , class="btn-danger") }}
 
 </form>
 {% endblock %}

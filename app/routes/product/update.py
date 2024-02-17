@@ -251,7 +251,7 @@ def edit_product(item_id):
         else:
             if file and allowed_file(file.filename):
                 num = db.session.execute(db.select(Product).order_by(Product.id.desc())).scalar().id + 1
-                file.filename = f"product_{num}.{file.filename.rsplit('.', 1)[1].lower()}"
+                file.filename = f"product_{item.id}.{file.filename.rsplit('.', 1)[1].lower()}"
                 img_url = secure_filename(file.filename)
                 file.save(os.path.join('app/static/img/products', img_url))
                 item.img_url = img_url
