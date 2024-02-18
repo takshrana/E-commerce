@@ -28,4 +28,7 @@ def create_app(config_class=Config):
     def test_page():
         return '<h1>Test</h1>'
 
+    with app.app_context():
+        db.create_all()
+        
     return app

@@ -13,7 +13,6 @@
         <div class="mb-3">
             <label class="form-label" for="category_id">Category</label>
             <select class="form-select" name="category_id" id="category_id" onchange="changeCategory(event)">
-                <option disabled selected value> -- select an option -- </option>
                 {% for category in categories %}
                 <option value="{{category.id}}" {% if category_id == category.id %} selected {% endif %}>{{category.name}}</option>
                 {% endfor %}
@@ -53,10 +52,9 @@
         {{ render_field(form.stock) }}
         {{ render_field(form.img) }}
         {{ render_field(form.submit, class='btn-danger form-btn') }}
-        <!--<a class="btn btn-primary btn-md ms-auto" href="{{ url_for('update.display_product', category_id=category_id, metal_id=metal_id, color_id=color_id, style_id=style_id)}}">Update</a>-->
-        <a class="btn btn-danger btn-md ms-auto form-btn" href="{{ url_for('update.display_all_product') }}">Update</button>
+        <a class="btn btn-danger form-btn" onclick="" href="{{ url_for('update.display_all_product') }}">Update</a>
     </form>
-    </div>
+</div>
 </div>
 
 
