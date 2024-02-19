@@ -160,3 +160,15 @@
   }
 
 
+.nav-fav{
+   font-size: 1.5rem;
+}
+
+.nav-item{
+   text-align: center;
+
+}
+
+.offcanvas-item{
+   text-align: left;
+}
