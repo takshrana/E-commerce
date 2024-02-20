@@ -3,10 +3,10 @@
 }
 
 .form-select, .form-control{
-   border: 0px!important;
-   outline:0px!important;
-   border-bottom: 0.5px solid black !important;
-   border-radius: 0px!important;
+   border: 0px;
+   outline:0px;
+   border-bottom: 0.5px solid black;
+   border-radius: 0px;
 }
 
 .form-label{
@@ -172,3 +172,76 @@
 .offcanvas-item{
    text-align: left;
 }
+
+
+/* Login Page */
+
+.login-page-bg{
+   padding: 2rem 0;
+}
+
+.login-div{
+   width: 500px;
+   margin: auto;
+   border-radius: 30px;
+   padding: 1rem 2rem;
+   background-color: white;
+}
+
+.login-title{
+   font-size: 1.3rem;
+   margin-bottom: 50px;
+   font-weight: 200;
+   color: rgba(18, 18, 18, 0.75)
+}
+
+.auth-form .form-label{
+   color: rgba(18, 18, 18, 0.75);
+}
+
+.login-btn{
+   font-size: 1rem;
+   font-weight: 500;
+   width: 50%;
+   color: white;
+   background-color: #e9718b;
+   border-radius: 10px;
+   padding: 0.7rem;
+   border: 0;
+}
+
+.login-btn:hover{
+   background-color: #df5d79;
+   color: white;
+   text-decoration: none;
+}
+
+.auth-form .form-control{
+   border: 1px solid rgba(18, 18, 18, 0.5);
+   font-weight: 300;;
+   border-radius: 5px;
+}
+
+.center-div{
+   text-align: center;
+}
+
+.btn-div{
+   padding-top: 25px;
+}
+
+.new-account-div{
+   padding: 15px 0;
+}
+
+.new-account{
+   text-decoration: none;
+   color: #df5d79;
+   font-size: 0.9rem;
+   font-weight: 400;
+}
+
+.new-account:hover{
+   color: #b84d64;
+}
+
