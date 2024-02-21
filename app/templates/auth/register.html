@@ -1,39 +1,33 @@
-{% from "bootstrap5/form.html" import render_form %}
+{% from "bootstrap5/form.html" import render_form, render_field %}
 {% extends 'base.html' %}
 {% block content %}
-
 <!-- Page Header -->
-<header
-  class="masthead"
-  style="background-image: url('../static/assets/img/register-bg.jpeg')"
->
-  <div class="container position-relative px-4 px-lg-5">
-    <div class="row gx-4 gx-lg-5 justify-content-center">
-      <div class="col-md-10 col-lg-8 col-xl-7">
-        <div class="page-heading">
-          <h1>Register</h1>
-        </div>
-      </div>
-    </div>
-  </div>
-</header>
-
-<main class="mb-4">
-  <div class="container">
+<div class="login-page-bg">
+  <div class="container-fluid login-div">
+      <h3 class="login-title">Sign Up</h3>
+{% include 'flash.html' %}
+  <!-- <div class="container">
     <div class="row">
       <div class="col-lg-8 col-md-10 mx-auto">
-        {% with messages = get_flashed_messages() %}
-          {% if messages %}
-            {% for message in messages %}
-              <p class="flash">{{ message }}</p>
-            {% endfor %}
-          {% endif %}
-        {% endwith %}
         {{ render_form(form, novalidate=True) }}
-        <a href="{{ url_for('auth.login') }}">Already have an account? Login here</a>
+        <a href="{{ url_for('auth.register') }}">Create a new account</a>
+      
       </div>
     </div>
-  </div>
-</main>
+  </div> -->
+  <form class="auth-form" method="POST" action="{{ url_for(request.endpoint) }}">
+    {{ form.csrf_token }}
+{{ render_field(form.email, placeholder="johndoe@xyz.com") }}
+{{ render_field(form.password, placeholder="*****") }}
+<div class="center-div btn-div">
+  {{ render_field(form.submit, class='login-btn') }}
+</div>
+</form>
+<div class="center-div new-account-div">
+  <a class="new-account" href="{{ url_for('auth.login') }}">Already have an account? Login here</a>
+
+</div>
+</div>
+</div>
 
 {% endblock %}

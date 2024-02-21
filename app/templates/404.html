@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block title %}Giva Jewellery{% endblock %}
+
+{% block content %}
+<div class="template-404">
+    <h1 class="title">404</h1>
+    <h1 class="subtext1">
+      Uh-oh! Looks like a jewel went missing here!
+    </h1>
+    <h1 class="subtext2">
+      But don’t worry, it’s bound to get blingy soon!
+    </h1>
+    <div class="center-div btn-div">
+      <a href="{{ url_for('home.index') }}" class="btn btn-404">Explore</a>
+    </div>
+</div>
+{% endblock %}

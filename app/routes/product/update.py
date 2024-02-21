@@ -1,37 +1,54 @@
 import os
 from flask import render_template, url_for, redirect, request, flash
 from app.extensions import db
+from flask_login import current_user
+from functools import wraps
 from app.product.update import bp
 from app.models.product import Category, Metal, Color, Style, Product
 from app.forms.product import AddCategoryForm, AddMetalForm, AddStyleForm, AddColorForm, AddProductForm
 from app.routes.product.add import allowed_file, secure_filename
 
 
+def admin_only(function):
+    @wraps(function)
+    def wrapper(*args, **kwargs):
+        if current_user.is_authenticated and current_user.id == 1:
+            return function(*args, **kwargs)
+        else:
+            return render_template('404.html')
+    return wrapper
+
+
 @bp.route('/category', methods=['GET'])
+@admin_only
 def display_category():
     items = get_all_category()
     return render_template('product/update/display.html', items=items)
 
 
 @bp.route('/metal', methods=['GET'])
+@admin_only
 def display_metal():
     items = get_all_metal()
     return render_template('product/update/display.html', items=items)
 
 
 @bp.route('/style', methods=['GET'])
+@admin_only
 def display_style():
     items = get_all_style()
     return render_template('product/update/display.html', items=items)
 
 
 @bp.route('/color', methods=['GET'])
+@admin_only
 def display_color():
     items = get_all_color()
     return render_template('product/update/display.html', items=items)
 
 
 @bp.route('/product/', methods=['GET'])
+@admin_only
 def display_all_product(category_id=1, metal_id=1, color_id=1, style_id=1):
     items = get_all_product()
 
@@ -49,6 +66,7 @@ def display_all_product(category_id=1, metal_id=1, color_id=1, style_id=1):
 
 # @bp.route('/product/', methods=['GET'])
 @bp.route('/product/<int:category_id>/<int:metal_id>/<int:color_id>/<int:style_id>', methods=['GET'])
+@admin_only
 def display_product(category_id=1, metal_id=1, color_id=1, style_id=1):
     items = db.session.execute(db.select(Product).filter_by(category_id=category_id,
                                                             metal_id=metal_id,
@@ -67,6 +85,7 @@ def display_product(category_id=1, metal_id=1, color_id=1, style_id=1):
 
 
 @bp.route('/category/availability/<int:item_id>', methods=['GET'])
+@admin_only
 def update_category(item_id):
     item = db.get_or_404(Category, item_id)
     if item.active:
@@ -82,6 +101,7 @@ def update_category(item_id):
 
 
 @bp.route('/metal/availability/<int:item_id>', methods=['GET'])
+@admin_only
 def update_metal(item_id):
     item = db.get_or_404(Metal, item_id)
     if item.active:
@@ -97,6 +117,7 @@ def update_metal(item_id):
 
 
 @bp.route('/style/availability/<int:item_id>', methods=['GET'])
+@admin_only
 def update_style(item_id):
     item = db.get_or_404(Style, item_id)
     if item.active:
@@ -112,6 +133,7 @@ def update_style(item_id):
 
 
 @bp.route('/color/availability/<int:item_id>', methods=['GET'])
+@admin_only
 def update_color(item_id):
     item = db.get_or_404(Color, item_id)
     if item.active:
@@ -127,6 +149,7 @@ def update_color(item_id):
 
 
 @bp.route('/product/availability/<int:item_id>', methods=['GET'])
+@admin_only
 def update_product(item_id):
     product = db.get_or_404(Product, item_id)
     if product.active:
@@ -144,6 +167,7 @@ def update_product(item_id):
 
 
 @bp.route('/category/edit/<int:item_id>', methods=['GET', 'POST'])
+@admin_only
 def edit_category(item_id):
     item = db.get_or_404(Category, item_id)
     form = AddCategoryForm(name=item.name)
@@ -162,6 +186,7 @@ def edit_category(item_id):
 
 
 @bp.route('/metal/edit/<int:item_id>', methods=['GET', 'POST'])
+@admin_only
 def edit_metal(item_id):
     item = db.get_or_404(Metal, item_id)
     form = AddMetalForm(name=item.name)
@@ -181,6 +206,7 @@ def edit_metal(item_id):
 
 
 @bp.route('/color/edit/<int:item_id>', methods=['GET', 'POST'])
+@admin_only
 def edit_color(item_id):
     item = db.get_or_404(Color, item_id)
     form = AddColorForm(name=item.name)
@@ -200,6 +226,7 @@ def edit_color(item_id):
 
 
 @bp.route('/style/edit/<int:item_id>', methods=['GET', 'POST'])
+@admin_only
 def edit_style(item_id):
     item = db.get_or_404(Style, item_id)
     form = AddStyleForm(name=item.name)
@@ -219,6 +246,7 @@ def edit_style(item_id):
 
 
 @bp.route('/product/edit/<int:item_id>', methods=['GET', 'POST'])
+@admin_only
 def edit_product(item_id):
     item = db.get_or_404(Product, item_id)
     form = AddProductForm(name=item.name, price=item.price, stock=item.stock)

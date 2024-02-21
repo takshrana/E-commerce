@@ -2,12 +2,25 @@ import os
 from flask import render_template, url_for, redirect, request, flash
 from app.product.add import bp
 from datetime import datetime
+from flask_login import current_user
 from app.extensions import db
 from app.models.product import Product, Category, Style, Metal, Color
 from app.forms.product import AddCategoryForm, AddProductForm, AddMetalForm, AddStyleForm,  AddColorForm
 from werkzeug.utils import secure_filename
+from functools import wraps
 
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'webp'}
+
+
+def admin_only(function):
+    @wraps(function)
+    def wrapper(*args, **kwargs):
+        if current_user.is_authenticated and current_user.id == 1:
+            return function(*args, **kwargs)
+        else:
+            return render_template('404.html')
+    return wrapper
+
 
 
 def allowed_file(filename):
@@ -17,6 +30,7 @@ def allowed_file(filename):
 
 @bp.route('/product', methods=['GET', 'POST'])
 @bp.route('product/<int:category_id>/<int:metal_id>/<int:color_id>/<int:style_id>', methods=['GET', 'POST'])
+@admin_only
 def add_product(category_id=1, metal_id=1, color_id=1, style_id=1):
     # display = ShowSubcategory()
     # display.options.choices = [g.name for g in choices]
@@ -78,6 +92,7 @@ def add_product(category_id=1, metal_id=1, color_id=1, style_id=1):
 
 
 @bp.route('/category', methods=['GET', 'POST'])
+@admin_only
 def add_category():
     category = db.session.execute(db.select(Category).filter_by(active=True)).scalars()
     form = AddCategoryForm()
@@ -98,6 +113,7 @@ def add_category():
 
 
 @bp.route('/metal', methods=['GET', 'POST'])
+@admin_only
 def add_metal():
     choices = db.session.execute(db.select(Metal)).scalars()
 
@@ -118,6 +134,7 @@ def add_metal():
 
 
 @bp.route('/style', methods=['GET', 'POST'])
+@admin_only
 def add_style():
     choices = db.session.execute(db.select(Style)).scalars()
     form = AddStyleForm()
@@ -137,6 +154,7 @@ def add_style():
 
 
 @bp.route('/color', methods=['GET', 'POST'])
+@admin_only
 def add_color():
     choices = db.session.execute(db.select(Color)).scalars()
     form = AddColorForm()
@@ -208,8 +226,8 @@ def add_color():
 #                             stock=stock,
 #                             price=price,
 #                             img=img,
-#                             category_id=category,
 #                             metal_id=metal,
+#                             category_id=category,
 #                             color_id=color,
 #                             style_id=style,)
 #         db.session.add(new_entry)

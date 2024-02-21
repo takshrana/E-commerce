@@ -1,3 +1,38 @@
+/* Navbar */
+
+.search-bar .form-control{
+   border: 1px solid rgba(18, 18, 18, 0.5);
+   border-radius: 5px;
+   height: 50px;
+
+}
+
+.search-bar .form-control:hover{
+   border-width: 2px;
+}
+
+.nav-fav{
+   font-size: 1.5rem;
+}
+
+.nav-item{
+   text-align: center;
+}
+
+.user-link{
+   color: black!important;
+}
+
+.user-active{
+   color: #e9718b!important;
+}
+
+.offcanvas-item{
+   text-align: left;
+}
+
+/* Index */
+
 .bg-white{
    background-color: white;
 }
@@ -22,7 +57,7 @@
 }
 
 .form-page-bg{
-   background-color: #e63a31;
+   background-color: #df5d79;
    padding: 2rem 0;
 }
 
@@ -118,6 +153,10 @@
    width: 5%;
 }
 
+.btn-danger{
+   background-color: #df5d79;
+}
+
 
 @media (max-width: 765px){
    .logo-img {
@@ -159,19 +198,6 @@
  }
   }
 
-
-.nav-fav{
-   font-size: 1.5rem;
-}
-
-.nav-item{
-   text-align: center;
-
-}
-
-.offcanvas-item{
-   text-align: left;
-}
 
 
 /* Login Page */
@@ -236,12 +262,54 @@
 
 .new-account{
    text-decoration: none;
-   color: #df5d79;
+   color: #e9718b;
    font-size: 0.9rem;
    font-weight: 400;
 }
 
 .new-account:hover{
    color: #b84d64;
+}
+
+
+/* 404 Page */
+
+.template-404{
+   padding-top: 100px;
+   width: 50%;
+   margin: auto;
+   text-align: center;
+   
+}
+
+.template-404 .title{
+   color: #e9718b;
+   font-size: 10rem;
+}
+
+.template-404 .subtext1{
+   color: #e9718b;
+   font-size: 2.5rem;
+}
+
+.template-404 .subtext2{
+   font-size: 2rem;
+}
+
+.btn-404{
+   font-size: 1rem;
+   font-weight: 500;
+   width: 150px;
+   color: white;
+   background-color: #e9718b;
+   border-radius: 10px;
+   padding: 0.7rem;
+   border: 0;
+   text-decoration: none;
+}
+
+.btn-404:hover{
+   background-color: #df5d79;
+   color: white;
 }
 

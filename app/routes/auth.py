@@ -1,6 +1,6 @@
 from flask import render_template, flash, redirect, url_for
 from app.auth import bp
-from flask_login import login_user, logout_user
+from flask_login import login_user, logout_user, login_required
 from werkzeug.security import check_password_hash, generate_password_hash
 from app.extensions import db, login_manager
 from app.models.auth import User
@@ -12,17 +12,22 @@ def load_user(user_id):
     return db.get_or_404(User, user_id)
 
 
+@login_manager.unauthorized_handler
+def unauthorized():
+    return redirect(url_for('auth.login'))
+
+
 @bp.route('/register', methods=['GET', 'POST'])
 def register():
     form = RegisterForm()
 
     if form.validate_on_submit():
-        if db.session.execute(db.select(User).filter_by(email=form.email.data.lowercase())).scalar():
+        if db.session.execute(db.select(User).filter_by(email=form.email.data.lower())).scalar():
             flash("Email already registered.")
         else:
             salt_pass = generate_password_hash(password=form.password.data, method='pbkdf2:sha256', salt_length=8)
 
-            new_user = form.email.data.lowercase()
+            new_user = form.email.data.lower()
             user = User(email=new_user,password=salt_pass)
 
             db.session.add(user)
@@ -37,7 +42,7 @@ def register():
 def login():
     form = LoginForm()
     if form.validate_on_submit():
-        user = db.session.execute(db.select(User).filter_by(email=form.email.data.lowercase())).scalar()
+        user = db.session.execute(db.select(User).filter_by(email=form.email.data.lower())).scalar()
         if user:
             if check_password_hash(user.password, form.password.data):
                 login_user(user)
@@ -50,6 +55,7 @@ def login():
 
 
 @bp.route('/logout')
+@login_required
 def logout():
     logout_user()
     return redirect(url_for('home.index'))

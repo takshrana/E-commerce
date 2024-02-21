@@ -17,8 +17,8 @@
   </div> -->
   <form class="auth-form" method="POST" action="{{ url_for(request.endpoint) }}">
     {{ form.csrf_token }}
-{{ render_field(form.email) }}
-{{ render_field(form.password) }}
+{{ render_field(form.email, placeholder="johndoe@xyz.com") }}
+{{ render_field(form.password, placeholder="*****") }}
 <a class="new-account" href="">Forgot password?</a>
 <div class="center-div btn-div">
   {{ render_field(form.submit, class='login-btn') }}
