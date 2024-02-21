@@ -38,13 +38,16 @@
   <div class="card-container col-lg-3 col-sm-6 d-flex justify-content-center">
 
   <div class="product-card card" style="width: 18rem;">
+    <div onclick="window.location.href='product/{{product.id}}'">
 
-    <img src="{{ url_for('static', filename='img/products/') }}{% if product.img_url %}{{product.img_url}}{% else %}default.png{% endif %}" class="card-img-top" alt="">
-    <div class="product-body card-body">
-      <p class="product-price">₹{{ product.price }}</p>
-
-      <h5 class="product-title card-title">{{ product.name }}</h5>
-
+      
+      <img src="{{ url_for('static', filename='img/products/') }}{% if product.img_url %}{{product.img_url}}{% else %}default.png{% endif %}" class="card-img-top" alt="">
+      <div class="product-body card-body">
+        <p class="product-price">₹{{ product.price }}</p>
+        
+        <h5 class="product-title card-title">{{ product.name }}</h5>
+        
+      </div>
     </div>
     <a href="#" class="btn card-btn">Add to Cart</a>
 
